@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import Navbar from './component/navbar'
+import Navbar from './component/Navbar'
 import Hero from './Hero'
 import { Routes, Route } from "react-router-dom";
 
