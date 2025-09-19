@@ -7,7 +7,7 @@ import gita from "./herophoto/gita.mp4";
 import Guru from "./herophoto/guru.mp4";
 import quan from "./herophoto/qur.mp4";
 import chr from "./herophoto/chr.mp4";
-// import Footer from "./component/Footer"
+// import Footer from "./components/Footer"
 
 gsap.registerPlugin(ScrollTrigger);
 
