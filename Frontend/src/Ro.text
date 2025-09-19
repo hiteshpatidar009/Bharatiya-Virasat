@@ -1,0 +1,954 @@
+import React, { useState, useEffect } from 'react';
+import { Search, Menu, X, User, Facebook, Twitter, Instagram, Youtube, ChevronLeft, ChevronRight, MapPin, Calendar, Clock, Heart, ArrowLeft } from 'lucide-react';
+
+// Mock Data
+const mockData = {
+  builtHeritage: [
+    {
+      id: 1,
+      title: "Taj Mahal",
+      shortDesc: "Symbol of eternal love and Mughal architecture",
+      longDesc: "The Taj Mahal is an ivory-white marble mausoleum on the right bank of the river Yamuna in the Indian city of Agra. It was commissioned in 1632 by the Mughal emperor Shah Jahan to house the tomb of his favourite wife, Mumtaz Mahal; it also houses the tomb of Shah Jahan himself.",
+      category: "builtHeritage",
+      images: [
+        "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1585500684700-7061a0b52755?w=800&h=600&fit=crop"
+      ],
+      location: "Agra, Uttar Pradesh",
+      yearBuilt: "1653"
+    },
+    {
+      id: 2,
+      title: "Red Fort",
+      shortDesc: "Majestic Mughal fortress in Delhi",
+      longDesc: "The Red Fort is a historic fortified palace of the Mughal emperors that served as the main residence of the Mughal Emperors for nearly 200 years, until 1856.",
+      category: "builtHeritage",
+      images: [
+        "https://images.unsplash.com/photo-1577965043941-28c80a6dee7d?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&h=600&fit=crop"
+      ],
+      location: "Delhi",
+      yearBuilt: "1648"
+    },
+    {
+      id: 3,
+      title: "Hawa Mahal",
+      shortDesc: "Palace of Winds in Jaipur",
+      longDesc: "Hawa Mahal is a palace in Jaipur, India, built with red and pink sandstone. It is on the edge of the City Palace, Jaipur, and extends to the Zenana, or women's chambers.",
+      category: "builtHeritage",
+      images: [
+        "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1580547134101-0b78b0d6d24a?w=800&h=600&fit=crop"
+      ],
+      location: "Jaipur, Rajasthan",
+      yearBuilt: "1799"
+    }
+  ],
+  festivals: [
+    {
+      id: 4,
+      title: "Diwali",
+      shortDesc: "Festival of lights celebrating good over evil",
+      longDesc: "Diwali is the Hindu festival of lights, usually lasting five days and celebrated during the Hindu Lunisolar month Kartika. One of the most popular festivals of Hinduism, Diwali symbolizes the spiritual victory of light over darkness, good over evil, and knowledge over ignorance.",
+      category: "festivals",
+      images: [
+        "https://images.unsplash.com/photo-1605379399642-870262d3d051?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1571141810-ca9a18c53c05?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1604741332914-2b6e3b0b99b6?w=800&h=600&fit=crop"
+      ],
+      season: "Autumn",
+      duration: "5 days"
+    },
+    {
+      id: 5,
+      title: "Holi",
+      shortDesc: "Festival of colors and spring",
+      longDesc: "Holi is a popular ancient Hindu festival, also known as the Festival of Love, the Festival of Colours, and the Festival of Spring. It celebrates the eternal and divine love of Radha Krishna.",
+      category: "festivals",
+      images: [
+        "https://images.unsplash.com/photo-1583339793403-3d9b001b6008?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1551634979-c44d4e4e6e80?w=800&h=600&fit=crop"
+      ],
+      season: "Spring",
+      duration: "2 days"
+    },
+    {
+      id: 6,
+      title: "Durga Puja",
+      shortDesc: "Celebrating Goddess Durga's victory",
+      longDesc: "Durga Puja is an annual Hindu festival originating in the Indian subcontinent which reveres and pays homage to the Hindu goddess Durga and is also celebrated because of Durga's victory over Mahishasura.",
+      category: "festivals",
+      images: [
+        "https://images.unsplash.com/photo-1570717173025-64dc5b3dc09b?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1606068649151-4ccfa0a7b506?w=800&h=600&fit=crop"
+      ],
+      season: "Autumn",
+      duration: "4 days"
+    }
+  ],
+  musicDance: [
+    {
+      id: 7,
+      title: "Bharatanatyam",
+      shortDesc: "Classical dance form from Tamil Nadu",
+      longDesc: "Bharatanatyam is a major genre of Indian classical dance that originated in Tamil Nadu. It is one of eight widely recognized Indian classical dance forms, and expresses South Indian religious themes and spiritual ideas.",
+      category: "musicDance",
+      images: [
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop"
+      ],
+      origin: "Tamil Nadu",
+      type: "Classical Dance"
+    },
+    {
+      id: 8,
+      title: "Kathak",
+      shortDesc: "Storytelling dance from North India",
+      longDesc: "Kathak is one of the eight major forms of Indian classical dance. The origin of Kathak is traditionally attributed to the traveling bards of ancient northern India known as Kathakars or storytellers.",
+      category: "musicDance",
+      images: [
+        "https://images.unsplash.com/photo-1594736797933-d0b22b3bb63c?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1594819047050-99defca82545?w=800&h=600&fit=crop"
+      ],
+      origin: "North India",
+      type: "Classical Dance"
+    }
+  ],
+  museums: [
+    {
+      id: 9,
+      title: "National Museum",
+      shortDesc: "Premier museum of India in New Delhi",
+      longDesc: "The National Museum in New Delhi is one of the largest museums in India. Established in 1949, it holds a variety of articles ranging from pre-historic era to modern works of art.",
+      category: "museums",
+      images: [
+        "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1573052897274-dfe2915fcfe5?w=800&h=600&fit=crop"
+      ],
+      location: "New Delhi",
+      established: "1949"
+    },
+    {
+      id: 10,
+      title: "Indian Museum",
+      shortDesc: "Oldest and largest museum in India",
+      longDesc: "The Indian Museum in Kolkata, also referred to as the Imperial Museum at Calcutta in colonial-era texts, is the ninth oldest museum in the world and the oldest and largest museum in India.",
+      category: "museums",
+      images: [
+        "https://images.unsplash.com/photo-1566127992631-137a642a90f4?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1594736797933-d0b22b3bb63c?w=800&h=600&fit=crop"
+      ],
+      location: "Kolkata, West Bengal",
+      established: "1814"
+    }
+  ]
+};
+
+// Helper functions
+const getAllItems = () => {
+  return Object.values(mockData).flat();
+};
+
+const getTrendingItems = () => {
+  return getAllItems().slice(0, 6);
+};
+
+const getSpotlightItem = () => {
+  return getAllItems()[0];
+};
+
+const getItemsByCategory = (category) => {
+  return mockData[category] || [];
+};
+
+const getItemById = (id) => {
+  return getAllItems().find(item => item.id === parseInt(id));
+};
+
+const getRelatedItems = (item) => {
+  if (!item) return [];
+  return getItemsByCategory(item.category).filter(i => i.id !== item.id).slice(0, 3);
+};
+
+const searchItems = (query) => {
+  const allItems = getAllItems();
+  return allItems.filter(item => 
+    item.title.toLowerCase().includes(query.toLowerCase()) ||
+    item.shortDesc.toLowerCase().includes(query.toLowerCase()) ||
+    item.longDesc.toLowerCase().includes(query.toLowerCase())
+  );
+};
+
+// Navigation Component
+const Navigation = ({ currentRoute, setRoute }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const categories = [
+    { key: 'builtHeritage', label: 'Built Heritage' },
+    { key: 'festivals', label: 'Festivals' },
+    { key: 'musicDance', label: 'Music & Dance' },
+    { key: 'museums', label: 'Museums' }
+  ];
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      setRoute({ page: 'search', query: searchTerm });
+      setIsSearchOpen(false);
+      setSearchTerm('');
+    }
+  };
+
+  const handleNavClick = (route) => {
+    setRoute(route);
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <header className="bg-white shadow-lg sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          {/* Logo */}
+          <div 
+            className="flex items-center space-x-2 cursor-pointer"
+            onClick={() => handleNavClick({ page: 'home' })}
+          >
+            <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg">II</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">Incredible India</h1>
+              <p className="text-xs text-gray-600 hidden sm:block">Digital Heritage Experience</p>
+            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <button 
+              onClick={() => handleNavClick({ page: 'home' })}
+              className={`font-medium transition-colors ${
+                currentRoute.page === 'home' ? 'text-orange-600' : 'text-gray-700 hover:text-orange-600'
+              }`}
+            >
+              Home
+            </button>
+            <div className="relative group">
+              <button className="text-gray-700 hover:text-orange-600 font-medium flex items-center transition-colors">
+                Categories
+                <ChevronRight className="w-4 h-4 ml-1 transform group-hover:rotate-90 transition-transform" />
+              </button>
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                {categories.map((category) => (
+                  <button
+                    key={category.key}
+                    onClick={() => handleNavClick({ page: 'category', category: category.key })}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 first:rounded-t-lg last:rounded-b-lg transition-colors"
+                  >
+                    {category.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </nav>
+
+          {/* Search and Menu Icons */}
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="p-2 text-gray-600 hover:text-orange-600 transition-colors"
+            >
+              <Search className="w-6 h-6" />
+            </button>
+            <button className="p-2 text-gray-600 hover:text-orange-600 transition-colors">
+              <User className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 text-gray-600 hover:text-orange-600 transition-colors"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        {isSearchOpen && (
+          <div className="pb-4">
+            <form onSubmit={handleSearch} className="flex">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search heritage sites, festivals, arts..."
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                autoFocus
+              />
+              <button
+                type="submit"
+                className="px-6 py-2 bg-orange-600 text-white rounded-r-lg hover:bg-orange-700 transition-colors"
+              >
+                Search
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 py-4">
+            <button
+              onClick={() => handleNavClick({ page: 'home' })}
+              className="block w-full text-left py-2 text-gray-700 hover:text-orange-600 transition-colors"
+            >
+              Home
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category.key}
+                onClick={() => handleNavClick({ page: 'category', category: category.key })}
+                className="block w-full text-left py-2 text-gray-700 hover:text-orange-600 transition-colors"
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+  );
+};
+
+// Footer Component
+const Footer = () => {
+  return (
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">II</span>
+              </div>
+              <span className="font-bold text-lg">Incredible India</span>
+            </div>
+            <p className="text-gray-400 text-sm">
+              Discover the soul of India through our rich heritage, traditions, and art.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Sitemap</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-bold text-lg mb-4">Categories</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Built Heritage</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Festivals</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Music & Dance</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Museums</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-bold text-lg mb-4">Follow Us</h3>
+            <div className="flex space-x-4">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Facebook className="w-6 h-6" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Twitter className="w-6 h-6" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Instagram className="w-6 h-6" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Youtube className="w-6 h-6" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <p>&copy; 2025 Incredible India - Digital Heritage Experience. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+// Card Component
+const Card = ({ item, setRoute, className = "" }) => {
+  const handleClick = () => {
+    setRoute({ page: 'item', itemId: item.id });
+  };
+
+  return (
+    <div 
+      className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all cursor-pointer group ${className}`}
+      onClick={handleClick}
+    >
+      <div className="relative overflow-hidden">
+        <img
+          src={item.images[0]}
+          alt={item.title}
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div className="absolute top-4 right-4">
+          <button 
+            className="p-2 bg-white rounded-full shadow-md hover:bg-red-50 transition-colors"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Heart className="w-4 h-4 text-gray-600 hover:text-red-500" />
+          </button>
+        </div>
+      </div>
+      <div className="p-4">
+        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
+          {item.title}
+        </h3>
+        <p className="text-gray-600 text-sm mb-2">{item.shortDesc}</p>
+        {item.location && (
+          <div className="flex items-center text-gray-500 text-xs">
+            <MapPin className="w-3 h-3 mr-1" />
+            <span>{item.location}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Carousel Component
+const Carousel = ({ items, title, setRoute }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const itemsPerView = 3;
+  const maxIndex = Math.max(0, items.length - itemsPerView);
+
+  const nextSlide = () => {
+    setCurrentIndex(prev => Math.min(prev + 1, maxIndex));
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex(prev => Math.max(prev - 1, 0));
+  };
+
+  return (
+    <div className="relative">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+        <div className="flex space-x-2">
+          <button
+            onClick={prevSlide}
+            disabled={currentIndex === 0}
+            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={nextSlide}
+            disabled={currentIndex === maxIndex}
+            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-300 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
+        >
+          {items.map((item) => (
+            <div key={item.id} className="w-1/3 flex-shrink-0 px-2">
+              <Card item={item} setRoute={setRoute} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Hero Section Component
+const HeroSection = ({ setRoute }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      setRoute({ page: 'search', query: searchTerm });
+      setSearchTerm('');
+    }
+  };
+
+  return (
+    <div className="relative h-96 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-700 flex items-center">
+      <div className="absolute inset-0 bg-black opacity-40"></div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          Discover the Soul of India
+        </h1>
+        <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+          Explore the rich heritage, traditions, and art that define our nation
+        </p>
+        <form onSubmit={handleSearch} className="max-w-md mx-auto">
+          <div className="flex">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search heritage sites, festivals, arts..."
+              className="flex-1 px-4 py-3 rounded-l-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+            <button
+              type="submit"
+              className="px-6 py-3 bg-orange-600 text-white rounded-r-lg hover:bg-orange-700 transition-colors"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// Home Page Component
+const HomePage = ({ setRoute }) => {
+  const spotlightItem = getSpotlightItem();
+  const trendingItems = getTrendingItems();
+
+  const categories = [
+    {
+      key: 'builtHeritage',
+      label: 'Built Heritage',
+      description: 'Majestic monuments and architectural marvels',
+      image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=400&h=300&fit=crop'
+    },
+    {
+      key: 'festivals',
+      label: 'Festivals',
+      description: 'Colorful celebrations and traditions',
+      image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?w=400&h=300&fit=crop'
+    },
+    {
+      key: 'musicDance',
+      label: 'Music & Dance',
+      description: 'Classical and folk performing arts',
+      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop'
+    },
+    {
+      key: 'museums',
+      label: 'Museums',
+      description: 'Treasures of history and culture',
+      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=300&fit=crop'
+    }
+  ];
+
+  return (
+    <div>
+      <HeroSection setRoute={setRoute} />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Spotlight Section */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Spotlight</h2>
+          {spotlightItem && (
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div className="md:flex">
+                <div className="md:w-1/2">
+                  <img
+                    src={spotlightItem.images[0]}
+                    alt={spotlightItem.title}
+                    className="w-full h-64 md:h-full object-cover"
+                  />
+                </div>
+                <div className="md:w-1/2 p-8">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    {spotlightItem.title}
+                  </h3>
+                  <p className="text-gray-600 mb-6">{spotlightItem.longDesc}</p>
+                  {spotlightItem.location && (
+                    <div className="flex items-center text-gray-500 mb-4">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      <span>{spotlightItem.location}</span>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => setRoute({ page: 'item', itemId: spotlightItem.id })}
+                    className="inline-block bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition-colors"
+                  >
+                    Learn More
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* Trending Section */}
+        <section className="mb-16">
+          <Carousel items={trendingItems} title="Trending" setRoute={setRoute} />
+        </section>
+
+        {/* Explore by Theme Section */}
+        <section>
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Explore by Theme</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {categories.map((category) => (
+              <button
+                key={category.key}
+                onClick={() => setRoute({ page: 'category', category: category.key })}
+                className="group text-left"
+              >
+                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={category.image}
+                      alt={category.label}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
+                      {category.label}
+                    </h3>
+                    <p className="text-gray-600 text-sm">{category.description}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+// Category Page Component
+const CategoryPage = ({ category, setRoute }) => {
+  const [sortBy, setSortBy] = useState('name');
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    let categoryItems = getItemsByCategory(category);
+    
+    // Sort items
+    const sortedItems = [...categoryItems].sort((a, b) => {
+      if (sortBy === 'name') {
+        return a.title.localeCompare(b.title);
+      } else if (sortBy === 'date') {
+        return (a.yearBuilt || a.established || '0').localeCompare(b.yearBuilt || b.established || '0');
+      }
+      return 0;
+    });
+    
+    setItems(sortedItems);
+  }, [category, sortBy]);
+
+  const getCategoryTitle = (key) => {
+    const categoryMap = {
+      builtHeritage: 'Built Heritage',
+      festivals: 'Festivals',
+      musicDance: 'Music & Dance',
+      museums: 'Museums'
+    };
+    return categoryMap[key] || key;
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button */}
+        <button
+          onClick={() => setRoute({ page: 'home' })}
+          className="flex items-center text-gray-600 hover:text-orange-600 mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Home
+        </button>
+
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              {getCategoryTitle(category)}
+            </h1>
+            <p className="text-gray-600">{items.length} items found</p>
+          </div>
+          
+          {/* Sort Filter */}
+          <div className="flex items-center space-x-4">
+            <label className="text-gray-700 font-medium">Sort by:</label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              <option value="name">Name</option>
+              <option value="date">Date</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Items Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {items.map((item) => (
+            <Card key={item.id} item={item} setRoute={setRoute} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Item Detail Page Component
+const ItemDetailPage = ({ itemId, setRoute }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const item = getItemById(itemId);
+  const relatedItems = getRelatedItems(item);
+
+  if (!item) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Item not found</h2>
+          <button
+            onClick={() => setRoute({ page: 'home' })}
+            className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition-colors"
+          >
+            Go to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % item.images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + item.images.length) % item.images.length);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button */}
+        <button
+          onClick={() => setRoute({ page: 'home' })}
+          className="flex items-center text-gray-600 hover:text-orange-600 mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back
+        </button>
+
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="md:flex">
+            {/* Image Gallery */}
+            <div className="md:w-1/2">
+              <div className="relative">
+                <img
+                  src={item.images[currentImageIndex]}
+                  alt={item.title}
+                  className="w-full h-96 object-cover"
+                />
+                {item.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </>
+                )}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                  {item.images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-3 h-3 rounded-full transition-colors ${
+                        index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="md:w-1/2 p-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                {item.title}
+              </h1>
+              
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                {item.longDesc}
+              </p>
+
+              {/* Metadata */}
+              <div className="space-y-3 mb-6">
+                {item.location && (
+                  <div className="flex items-center text-gray-700">
+                    <MapPin className="w-5 h-5 mr-3 text-orange-600" />
+                    <span><strong>Location:</strong> {item.location}</span>
+                  </div>
+                )}
+                {item.yearBuilt && (
+                  <div className="flex items-center text-gray-700">
+                    <Calendar className="w-5 h-5 mr-3 text-orange-600" />
+                    <span><strong>Built:</strong> {item.yearBuilt}</span>
+                  </div>
+                )}
+                {item.established && (
+                  <div className="flex items-center text-gray-700">
+                    <Calendar className="w-5 h-5 mr-3 text-orange-600" />
+                    <span><strong>Established:</strong> {item.established}</span>
+                  </div>
+                )}
+                {item.season && (
+                  <div className="flex items-center text-gray-700">
+                    <Clock className="w-5 h-5 mr-3 text-orange-600" />
+                    <span><strong>Season:</strong> {item.season}</span>
+                  </div>
+                )}
+                {item.duration && (
+                  <div className="flex items-center text-gray-700">
+                    <Clock className="w-5 h-5 mr-3 text-orange-600" />
+                    <span><strong>Duration:</strong> {item.duration}</span>
+                  </div>
+                )}
+                {item.origin && (
+                  <div className="flex items-center text-gray-700">
+                    <MapPin className="w-5 h-5 mr-3 text-orange-600" />
+                    <span><strong>Origin:</strong> {item.origin}</span>
+                  </div>
+                )}
+                {item.type && (
+                  <div className="flex items-center text-gray-700">
+                    <span className="w-5 h-5 mr-3"></span>
+                    <span><strong>Type:</strong> {item.type}</span>
+                  </div>
+                )}
+              </div>
+
+              <button className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition-colors">
+                Add to Favorites
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Related Items */}
+        {relatedItems.length > 0 && (
+          <section className="mt-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">Related Items</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedItems.map((relatedItem) => (
+                <Card key={relatedItem.id} item={relatedItem} setRoute={setRoute} />
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Search Results Page Component
+const SearchPage = ({ query, setRoute }) => {
+  const [searchResults, setSearchResults] = useState([]);
+  
+  useEffect(() => {
+    if (query) {
+      const results = searchItems(query);
+      setSearchResults(results);
+    }
+  }, [query]);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button */}
+        <button
+          onClick={() => setRoute({ page: 'home' })}
+          className="flex items-center text-gray-600 hover:text-orange-600 mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Home
+        </button>
+
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Search Results
+          </h1>
+          <p className="text-gray-600">
+            {searchResults.length} results found for "{query}"
+          </p>
+        </div>
+
+        {/* Results */}
+        {searchResults.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {searchResults.map((item) => (
+              <Card key={item.id} item={item} setRoute={setRoute} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">No results found</h3>
+            <p className="text-gray-500">Try searching with different keywords</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Main App Component
+export default function App() {
+  const [currentRoute, setCurrentRoute] = useState({ page: 'home' });
+
+  const renderPage = () => {
+    switch (currentRoute.page) {
+      case 'home':
+        return <HomePage setRoute={setCurrentRoute} />;
+      case 'category':
+        return <CategoryPage category={currentRoute.category} setRoute={setCurrentRoute} />;
+      case 'item':
+        return <ItemDetailPage itemId={currentRoute.itemId} setRoute={setCurrentRoute} />;
+      case 'search':
+        return <SearchPage query={currentRoute.query} setRoute={setCurrentRoute} />;
+      default:
+        return <HomePage setRoute={setCurrentRoute} />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navigation currentRoute={currentRoute} setRoute={setCurrentRoute} />
+      {renderPage()}
+      <Footer />
+    </div>
+  );
+}
