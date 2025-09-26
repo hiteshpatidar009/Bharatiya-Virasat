@@ -1,4 +1,3 @@
-{
   "builds": [
     {
       "src": "Frontend/package.json",
@@ -7,9 +6,6 @@
         "distDir": "dist"
       }
     }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/Frontend/" }
   ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/Frontend/" }
