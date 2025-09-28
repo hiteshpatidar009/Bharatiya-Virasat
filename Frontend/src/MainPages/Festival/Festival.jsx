@@ -5,6 +5,20 @@ import FestivalList from "./FestivalList";
 function Festival() {
   return (
     <div className="bg-black min-h-screen text-white">
+       <Helmet>
+        <title>Festivals of India - Bharatiya Virasat</title>
+        <meta
+          name="description"
+          content="Discover the vibrant festivals of India — Diwali, Holi, Navratri, Eid, and more. Explore their cultural significance on Bharatiya Virasat."
+        />
+        <meta name="keywords" content="Indian Festivals, Diwali, Holi, Navratri, Eid, Bharatiya Virasat" />
+        <meta property="og:title" content="Festivals of India - Bharatiya Virasat" />
+        <meta
+          property="og:description"
+          content="Celebrate the diversity of India through its colorful and traditional festivals."
+        />
+        <meta property="og:type" content="website" />
+      </Helmet>
       {/* First Slide - Video */}
       <div className="w-full">
         <video

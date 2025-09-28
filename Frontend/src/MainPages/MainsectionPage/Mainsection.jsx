@@ -8,7 +8,19 @@ import SecHero from './SecHero';
 
 function Mainsection() {
   return (
+
+    
     <div>
+
+       <Helmet>
+        <title>Bharatiya Virasat - Explore Indian Heritage</title>
+        <meta 
+          name="description" 
+          content="Explore Indian culture, heritage, and traditions on Bharatiya Virasat." 
+        />
+      </Helmet>
+
+      
       <Firstmain/>
       <Hero/>
       <SecHero/>

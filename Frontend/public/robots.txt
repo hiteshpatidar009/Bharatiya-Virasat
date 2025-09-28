@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bharativershat.vercel.app/sitemap.xml

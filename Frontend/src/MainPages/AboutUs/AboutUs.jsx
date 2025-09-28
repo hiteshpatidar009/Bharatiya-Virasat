@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Helmet } from "react-helmet";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,8 +65,17 @@ const AboutUs = () => {
   ];
 
   return (
+
+
     <div className="font-sans bg-gray-900 text-gray-200 min-h-screen">
 
+ <Helmet>
+        <title>About Us - Bharatiya Virasat</title>
+        <meta 
+          name="description" 
+          content="Learn more about Bharatiya Virasat, a project that showcases Indian heritage and traditions." 
+        />
+      </Helmet>
       {/* Hero Section */}
       <section
         ref={heroRef}
