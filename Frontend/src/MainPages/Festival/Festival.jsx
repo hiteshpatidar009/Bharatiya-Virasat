@@ -1,6 +1,7 @@
 import React from "react";
 import Festivalvideo from "./FestivalPhoto/Festivalvideo.mp4";
 import FestivalList from "./FestivalList";
+import { Helmet } from "react-helmet";
 
 function Festival() {
   return (

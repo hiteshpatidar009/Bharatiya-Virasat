@@ -1,6 +1,7 @@
 import React from "react";
 import Heritagevideo from "./HeritagePhoto/newheritagevideo.mov"; 
 import Heritage from "./Heritage.jsx";
+import { Helmet } from "react-helmet";
 
 function MainHeritage() {
   return (

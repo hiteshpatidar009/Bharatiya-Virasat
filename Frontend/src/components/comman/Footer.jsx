@@ -61,7 +61,7 @@ const Footer = () => {
         <nav className="flex flex-wrap justify-center gap-6 footer-item">
           <a href="/" className="hover:text-amber-400 transition-colors">Home</a>
           <a href="/festival" className="hover:text-amber-400 transition-colors">Festival</a>
-          <a href="/heritage" className="hover:text-amber-400 transition-colors">Heritage</a>
+          <a href="/mainheritage" className="hover:text-amber-400 transition-colors">Heritage</a>
           <a href="/about" className="hover:text-amber-400 transition-colors">About Us</a>
         </nav>
 

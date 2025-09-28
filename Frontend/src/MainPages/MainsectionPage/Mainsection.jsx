@@ -3,7 +3,7 @@ import React from 'react'
 
 import Firstmain from "./Firstmain.jsx";
 import Hero from './Hero';
-
+import { Helmet } from "react-helmet";
 import SecHero from './SecHero';
 
 function Mainsection() {
