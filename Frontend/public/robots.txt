@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bharativershat.vercel.app/sitemap.xml
+Sitemap: https://bharatiyavirasat.vercel.app/sitemap.xml
